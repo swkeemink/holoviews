@@ -20,10 +20,10 @@ from .pandas import PandasInterface
 
 class cuDFInterface(PandasInterface):
     """
-    The cuDFInterface allows a Dataset objects to wrap a cuDF
+    The cuDFInterface allows a Dataset object to wrap a cuDF
     DataFrame object. Using cuDF allows working with columnar
     data on a GPU. Most operation leave the data in GPU memory,
-    however to plot the data it has to be loaded into memory.
+    but to plot the data it has to be loaded into CPU memory.
 
     The cuDFInterface covers almost the complete API exposed
     by the PandasInterface with two notable exceptions:
@@ -31,9 +31,9 @@ class cuDFInterface(PandasInterface):
     1) Sorting is not supported and any attempt at sorting will
        be ignored with an warning.
     2) cuDF does not easily support adding a new column to an existing
-       dataframe unless it is a scalar, add_dimension will therefore
+       dataframe unless it is a scalar; add_dimension will therefore
        error when supplied a non-scalar value.
-    3) Not all functions can be easily applied to a dask dataframe so
+    3) Not all functions can be easily applied to a cuDF dataframe so
        some functions applied with aggregate and reduce will not work.
     """
 
