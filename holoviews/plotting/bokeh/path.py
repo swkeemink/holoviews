@@ -161,7 +161,6 @@ class ContourPlot(PathPlot):
         if 'hover' not in self.handles or self.static_source:
             return
 
-        npath = len([vs for vs in data.values()][0])
         for d in element.vdims:
             dim = util.dimension_sanitizer(d.name)
             if dim not in data:

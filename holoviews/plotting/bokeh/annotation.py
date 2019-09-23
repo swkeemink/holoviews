@@ -17,7 +17,7 @@ except:
                  '-': None}
 from bokeh.transform import dodge
 
-from ...core.util import datetime_types, dimension_sanitizer, basestring
+from ...core.util import datetime_types, dimension_sanitizer
 from ...element import HLine, VLine
 from ..plot import GenericElementPlot
 from .element import AnnotationPlot, ElementPlot, CompositeElementPlot, ColorbarPlot
