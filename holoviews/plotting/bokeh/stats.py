@@ -63,12 +63,6 @@ class BoxWhiskerPlot(CompositeElementPlot, ColorbarPlot, LegendPlot):
     show_legend = param.Boolean(default=False, doc="""
         Whether to show legend for the plot.""")
 
-    # Deprecated options
-
-    color_index = param.ClassSelector(default=None, class_=(basestring, int),
-                                      allow_None=True, doc="""
-        Deprecated in favor of color style mapping, e.g. `box_color=dim('color')`""")
-
     # X-axis is categorical
     _x_range_type = FactorRange
 
@@ -175,13 +169,6 @@ class BoxWhiskerPlot(CompositeElementPlot, ColorbarPlot, LegendPlot):
             out_map = {'x': 'index', 'y': vdim}
         vbar2_map = dict(vbar_map)
 
-        # Get color values
-        if self.color_index is not None:
-            cdim = element.get_dimension(self.color_index)
-            cidx = element.get_dimension_index(self.color_index)
-        else:
-            cdim, cidx = None, None
-
         factors = []
         for key, g in groups.items():
             # Compute group label
@@ -194,10 +181,7 @@ class BoxWhiskerPlot(CompositeElementPlot, ColorbarPlot, LegendPlot):
             hover = 'hover' in self.handles
 
             # Add color factor
-            if cidx is not None and cidx<element.ndims:
-                factors.append(cdim.pprint_value(wrap_tuple(key)[cidx]))
-            else:
-                factors.append(label)
+            factors.append(label)
 
             # Compute statistics
             vals = g.dimension_values(g.vdims[0])
@@ -273,15 +257,8 @@ class BoxWhiskerPlot(CompositeElementPlot, ColorbarPlot, LegendPlot):
             return data, mapping, style
 
         # Define color dimension and data
-        if cidx is None or cidx>=element.ndims:
-            cdim = Dimension('index')
-        else:
-            r1_data[dimension_sanitizer(cdim.name)] = factors
-            r2_data[dimension_sanitizer(cdim.name)] = factors
-            factors = list(unique_iterator(factors))
-
         if self.show_legend:
-            vbar_map['legend'] = cdim.name
+            vbar_map['legend'] = 'index'
 
         return data, mapping, style
 
@@ -310,12 +287,6 @@ class ViolinPlot(BoxWhiskerPlot):
 
     violin_width = param.Number(default=0.8, doc="""
        Relative width of the violin""")
-
-    # Deprecated options
-
-    color_index = param.ClassSelector(default=None, class_=(basestring, int),
-                                      allow_None=True, doc="""
-        Deprecated in favor of color style mapping, e.g. `violin_color=dim('color')`""")
 
     # Map each glyph to a style group
     _style_groups = {'patches': 'violin', 'segment': 'stats', 'vbar': 'box',
