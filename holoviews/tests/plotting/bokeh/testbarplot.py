@@ -29,7 +29,7 @@ class TestBarPlot(TestBokehPlot):
         self.assertEqual(len(fig.legend), 0)
 
     def test_empty_bars(self):
-        bars = Bars([], kdims=['x', 'y'], vdims=['z']).opts(plot=dict(group_index=1))
+        bars = Bars([], kdims=['x', 'y'], vdims=['z'])
         plot = bokeh_renderer.get_plot(bars)
         plot.initialize_plot()
         source = plot.handles['source']
@@ -67,7 +67,7 @@ class TestBarPlot(TestBokehPlot):
     def test_bars_positive_negative_mixed(self):
         bars = Bars([('A', 0, 1), ('A', 1, -1), ('B', 0, 2)],
                     kdims=['Index', 'Category'], vdims=['Value'])
-        plot = bokeh_renderer.get_plot(bars.opts(plot=dict(stack_index=1)))
+        plot = bokeh_renderer.get_plot(bars.opts(stacked=True))
         source = plot.handles['source']
         self.assertEqual(list(source.data['Category']), ['1', '0', '0'])
         self.assertEqual(list(source.data['Index']), ['A', 'A', 'B'])
@@ -254,13 +254,3 @@ class TestBarPlot(TestBokehPlot):
         plot = bokeh_renderer.get_plot(overlay)
         for subplot, color in zip(plot.subplots.values(),  colors):
             self.assertEqual(subplot.handles['glyph'].fill_color, color)
-
-    def test_bars_color_index_color_clash(self):
-        bars = Bars([(0, 0, 0), (0, 1, 1), (0, 2, 2)],
-                    vdims=['y', 'color']).options(color='color', color_index='color')
-        with ParamLogStream() as log:
-            bokeh_renderer.get_plot(bars)
-        log_msg = log.stream.read()
-        warning = ("Cannot declare style mapping for 'color' option "
-                   "and declare a color_index; ignoring the color_index.\n")
-        self.assertEqual(log_msg, warning)

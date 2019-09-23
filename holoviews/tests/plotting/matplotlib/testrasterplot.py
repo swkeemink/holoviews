@@ -54,5 +54,5 @@ class TestRasterPlot(TestMPLPlot):
 
     def test_image_cbar_extend_clime(self):
         img = Image(np.array([[0, 1], [2, 3]])).opts(style=dict(clim=(None, None)))
-        plot = mpl_renderer.get_plot(img(plot=dict(colorbar=True, color_index=1)))
+        plot = mpl_renderer.get_plot(img(plot=dict(colorbar=True)))
         self.assertEqual(plot.handles['cbar'].extend, 'neither')

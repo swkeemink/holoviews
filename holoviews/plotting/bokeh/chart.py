@@ -5,7 +5,7 @@ from collections import defaultdict
 import numpy as np
 import param
 
-from bokeh.models importCustomJS, Whisker, Range1d
+from bokeh.models import CustomJS, Whisker, Range1d
 from bokeh.models.tools import BoxSelectTool
 from bokeh.transform import jitter
 
