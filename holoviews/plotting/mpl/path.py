@@ -78,8 +78,8 @@ class PathPlot(ColorbarPlot):
 
     def update_handles(self, key, axis, element, ranges, style):
         artist = self.handles['artist']
-        data, style, axis_kwargs = self.get_data(element, ranges, style)
-        artist.set_paths(data[0])
+        artist._offsets3d, style, axis_kwargs = self.get_data(element, ranges, style)
+
         if 'array' in style:
             artist.set_array(style['array'])
             artist.set_clim(style['clim'])
